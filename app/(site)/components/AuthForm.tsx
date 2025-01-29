@@ -19,7 +19,7 @@ const AuthForm = () => {
   const session = useSession();
   const router = useRouter();
 
-  const toggleVatiants = useCallback(() => {
+  const toggleVariants = useCallback(() => {
     if (variant === "LOGIN") {
       setVariant("REGISTER");
     } else {
@@ -77,6 +77,7 @@ const AuthForm = () => {
         }
         if (callback?.ok && !callback.error) {
           toast.success("Logged in!");
+          router.push("/users");
         }
       })
       .finally(() => setIsLoading(false));
@@ -143,7 +144,7 @@ const AuthForm = () => {
               ? "New to Messenger ?"
               : "Already have an account"}
           </div>
-          <div onClick={toggleVatiants} className="underline cursor-pointer">
+          <div onClick={toggleVariants} className="underline cursor-pointer">
             {variant === "LOGIN" ? "Create an account" : "Login"}
           </div>
         </div>
