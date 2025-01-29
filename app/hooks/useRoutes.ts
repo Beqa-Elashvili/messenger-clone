@@ -4,19 +4,19 @@ import { HiChat } from "react-icons/hi";
 import { HiArrowLeftOnRectangle, HiUsers } from "react-icons/hi2";
 
 import { signOut } from "next-auth/react";
-import useConservation from "./useConversation";
+import useConversation from "./useConversation";
 
 const useRoutes = () => {
   const pathname = usePathname();
-  const { conservationId } = useConservation();
+  const { conversationId } = useConversation();
 
   const routes = useMemo(
     () => [
       {
         label: "Chat",
-        href: "/conservations",
+        href: "/conversations",
         icon: HiChat,
-        active: pathname === "/conservation" || !!conservationId,
+        active: pathname === "/conservation" || !!conversationId,
       },
       {
         label: "Users",
@@ -31,7 +31,7 @@ const useRoutes = () => {
         icon: HiArrowLeftOnRectangle,
       },
     ],
-    [pathname, conservationId]
+    [pathname, conversationId]
   );
   return routes;
 };
