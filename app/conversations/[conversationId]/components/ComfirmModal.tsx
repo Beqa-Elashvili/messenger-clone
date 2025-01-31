@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import Modal from "@/app/components/Modal";
 import { FiAlertTriangle } from "react-icons/fi";
 import { Dialog } from "@headlessui/react";
+import Button from "@/app/components/Button";
 
 interface ConfirmModalProps {
   isOpen?: boolean;
@@ -22,7 +23,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose }) => {
   const onDelete = useCallback(() => {
     setIsLoading(true);
     axios
-      .delete(`/api/conversation/${conversationId}`)
+      .delete(`/api/conversations/${conversationId}`)
       .then(() => {
         onClose(), router.push("/conversations"), router.refresh();
       })
@@ -45,9 +46,19 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose }) => {
               Delete conversation
             </Dialog.Title>
             <div className="mt-2">
-              <p>Are you sure you want to delete this conversation? This</p>
+              <p className="text-sm text-gray-500">
+                Are you sure you want to delete this conversation? This
+              </p>
             </div>
           </div>
+        </div>
+        <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+          <Button disabled={isLoading} danger onClick={onDelete}>
+            Delete
+          </Button>
+          <Button disabled={isLoading} secondary onClick={onClose}>
+            Close
+          </Button>
         </div>
       </Modal>
     </div>
