@@ -23,7 +23,8 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
   data,
 }) => {
   const otherUser = useOtherUser(data);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const [ConfirmModal, setConfirmModal] = useState<boolean>(false);
 
   const joinedDate = useMemo(() => {
     return format(new Date(otherUser.createAt), "PP");
@@ -40,10 +41,9 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
     return "Active";
   }, [data]);
 
-
   return (
     <>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal isOpen={ConfirmModal} onClose={() => setConfirmModal(false)}>
         <div className="bg-white p-5">
           <div>Hello modal!</div>
         </div>
@@ -99,7 +99,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                           </div>
                           <div className="flex gap-10 my-8">
                             <div
-                              onClick={() => setIsModalOpen(true)}
+                              onClick={() => setConfirmModal(true)}
                               className="flex flex-col gap-3 items-center cursor-pointer hover:opacity-75"
                             >
                               <div className="w-10 h-10 bg-neutral-100 flex items-center justify-center">
