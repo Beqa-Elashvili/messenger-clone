@@ -4,9 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "export": "next export",
-    "build": "npm install --legacy-peer-deps && next build",
-    "vercel-build": "npm install --legacy-peer-deps && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate"
@@ -22,7 +20,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
-    "next": "15.1.6",
+    "next": "^15.1.6",
     "next-auth": "^4.24.11",
     "next-cloudinary": "^6.16.0",
     "next-superjson-plugin": "^0.6.3",
