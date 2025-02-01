@@ -8,16 +8,17 @@ import Button from "@/app/components/Button";
 import AuthSocialButton from "./AuthSocialButton";
 import { BsGithub, BsGoogle } from "react-icons/bs";
 import { toast } from "react-hot-toast";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 
 const AuthForm = () => {
   type variants = "LOGIN" | "REGISTER";
 
   const [variant, setVariant] = useState<variants>("LOGIN");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const session = useSession();
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   const toggleVariants = useCallback(() => {
     if (variant === "LOGIN") {
@@ -45,8 +46,14 @@ const AuthForm = () => {
     if (variant === "REGISTER") {
       axios
         .post("/api/register", data)
-        .then(() => signIn("credentials", data))
-        .catch(() => toast.error("Something went wrong"))
+        .then((response) => {
+          console.log(response);
+          toast.success(response.data.message || "Registration successful!");
+          signIn("credentials", data);
+        })
+        .catch((error) =>
+          toast.error(error.response?.data || "Something went wrong")
+        )
         .finally(() => setIsLoading(false));
     }
     if (variant === "LOGIN") {
@@ -56,7 +63,7 @@ const AuthForm = () => {
       })
         .then((callback) => {
           if (callback?.error) {
-            toast.error("Invalid credentials");
+            toast.error(callback?.error || "Invalid credentials");
           }
           if (callback?.ok && !callback?.error) {
             toast.success("Logged in!");
@@ -73,10 +80,10 @@ const AuthForm = () => {
     signIn(action, { redirect: false })
       .then((callback) => {
         if (callback?.error) {
-          toast.error("Invalid credentials");
+          toast.error(callback?.error || "Invalid credentials");
         }
         if (callback?.ok && !callback.error) {
-          toast.success("Logged in!");
+          toast.success(callback?.ok || "Logged in!");
           router.push("/users");
         }
       })
@@ -103,13 +110,24 @@ const AuthForm = () => {
             errors={errors}
             disabled={isLoading}
           />
-          <Input
-            id="password"
-            label="Password"
-            register={register}
-            errors={errors}
-            disabled={isLoading}
-          />
+          <div className="relative flex items-center">
+            <div className="w-full">
+              <Input
+                id="password"
+                label="Password"
+                type={showPassword ? "text" : "password"}
+                register={register}
+                errors={errors}
+                disabled={isLoading}
+              />
+            </div>
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              className="text-gray-500 absolute translate-y-4 translate-x-0 right-2 cursor-pointer"
+            >
+              {showPassword ? <IoIosEyeOff /> : <IoIosEye />}
+            </span>
+          </div>
           <div>
             <Button disabled={isLoading} fullwidth type="submit">
               {variant === "LOGIN" ? "Sign in" : "REGISTER"}

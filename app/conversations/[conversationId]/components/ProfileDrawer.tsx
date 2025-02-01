@@ -102,7 +102,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                               <Avatar user={otherUser} />
                             )}
                           </div>
-                          <div className="">{title}</div>
+                          <div>{title}</div>
                           <div className="text-sm  text-gray-500">
                             {statusText}
                           </div>
