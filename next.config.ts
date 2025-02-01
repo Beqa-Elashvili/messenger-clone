@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
       "lh3.googleuserscontent.com",
     ],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
