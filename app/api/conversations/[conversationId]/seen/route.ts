@@ -7,7 +7,7 @@ interface IParams {
   conversationId?: string;
 }
 
-export async function POST(request: Request, { params }: { params: IParams }) {
+export async function POST(request: Request, { params }: { params: any }) {
   try {
     const currentUser = await getCurrentUser();
     const { conversationId } = params;
