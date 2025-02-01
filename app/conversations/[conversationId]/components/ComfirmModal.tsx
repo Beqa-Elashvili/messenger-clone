@@ -9,6 +9,7 @@ import Modal from "@/app/components/Modal";
 import { FiAlertTriangle } from "react-icons/fi";
 import { Dialog } from "@headlessui/react";
 import Button from "@/app/components/Button";
+import { ClipLoader } from "react-spinners";
 
 interface ConfirmModalProps {
   isOpen?: boolean;
@@ -20,9 +21,9 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose }) => {
   const { conversationId } = useConversation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const onDelete = useCallback(() => {
+  const onDelete = useCallback(async () => {
     setIsLoading(true);
-    axios
+    await axios
       .delete(`/api/conversations/${conversationId}`)
       .then(() => {
         onClose(), router.push("/conversations"), router.refresh();
@@ -53,9 +54,14 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
         <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-          <Button disabled={isLoading} danger onClick={onDelete}>
-            Delete
-          </Button>
+          <div className="relative w-1/4">
+            <Button fullwidth disabled={isLoading} danger onClick={onDelete}>
+              Delete
+            </Button>
+            <span className="absolute right-1 top-2">
+              <ClipLoader loading={isLoading} color="#bb5025" size={22} />
+            </span>
+          </div>
           <Button disabled={isLoading} secondary onClick={onClose}>
             Close
           </Button>

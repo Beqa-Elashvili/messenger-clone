@@ -6,9 +6,12 @@ import axios from "axios";
 import { HiPhoto, HiPaperAirplane } from "react-icons/hi2";
 import MessageInput from "./MessageInput";
 import { CldUploadButton } from "next-cloudinary";
+import { useState } from "react";
+import { CircleLoader } from "react-spinners";
 
 const Form = () => {
   const { conversationId } = useConversation();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
     register,
@@ -21,19 +24,33 @@ const Form = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setValue("message", "", { shouldValidate: true });
-    axios.post("/api/messages", {
-      ...data,
-      conversationId,
-    });
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      setIsLoading(true);
+      setValue("message", "", { shouldValidate: true });
+      await axios.post("/api/messages", {
+        ...data,
+        conversationId,
+      });
+    } catch (error) {
+      console.error("Something is wrong while send messages");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleUpload = (result: any) => {
-    axios.post("/api/messages", {
-      image: result?.info?.secure_url,
-      conversationId,
-    });
+  const handleUpload = async (result: any) => {
+    try {
+      setIsLoading(true);
+      await axios.post("/api/messages", {
+        image: result?.info?.secure_url,
+        conversationId,
+      });
+    } catch (error) {
+      console.error("Something went wrong while send images");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -49,13 +66,18 @@ const Form = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="flex items-center gap-2 lg:gap-4 w-full"
       >
-        <MessageInput
-          id="message"
-          register={register}
-          errors={errors}
-          required
-          placeholder="Write a message"
-        />
+        <div className="w-full relative flex items-center">
+          <MessageInput
+            id="message"
+            register={register}
+            errors={errors}
+            required
+            placeholder="Write a message"
+          />
+          <span className="absolute right-3 top-1">
+            <CircleLoader loading={isLoading} size={34} color="#0284c7" />
+          </span>
+        </div>
         <button
           type="submit"
           className="rounded-full p-2 bg-sky-500 cursor-pointer hover:bg-sky-600 transition"

@@ -12,6 +12,7 @@ import { User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { pusherClient } from "@/app/libs/pusher";
 import { find } from "lodash";
+import Button from "@/app/components/Button";
 
 interface ConversationListProps {
   initialItems: FullConversationsType[];
@@ -107,6 +108,15 @@ const ConversationList: React.FC<ConversationListProps> = ({
               <MdOutlineGroupAdd size={20} />
             </div>
           </div>
+          <hr />
+          {items.length === 0 && (
+            <div className="flex justify-center items-center gap-y-2 flex-col mt-6">
+              <p className="text-gray-600 font-semibold">No conversations</p>
+              <Button type="button" onClick={() => router.push("/users")}>
+                Choose a chat
+              </Button>
+            </div>
+          )}
           {items.map((item) => (
             <ConversationBox
               key={item.id}

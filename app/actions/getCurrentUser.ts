@@ -1,7 +1,7 @@
 import prisma from "@/app/libs/prismadb";
 import getSession from "./getSession";
 
-const getCurrentUser = async () => {
+const getCurrentUser = async (email?: string | null | undefined) => {
   try {
     const session = await getSession();
 
