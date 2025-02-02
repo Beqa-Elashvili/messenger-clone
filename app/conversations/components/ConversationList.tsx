@@ -118,13 +118,15 @@ const ConversationList: React.FC<ConversationListProps> = ({
                 </Button>
               </div>
             )}
-            {items.map((item) => (
-              <ConversationBox
-                key={item.id}
-                data={item}
-                selected={conversationId === item.id}
-              />
-            ))}
+            <div className="space-y-2">
+              {items.map((item) => (
+                <ConversationBox
+                  key={item.id}
+                  data={item}
+                  selected={conversationId === item.id}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </aside>
