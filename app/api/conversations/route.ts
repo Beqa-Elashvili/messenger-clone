@@ -15,7 +15,15 @@ export async function POST(request: Request) {
     }
 
     if (isGroup && (!members || members.length < 2 || !name)) {
-      return new NextResponse("Ivalid data", { status: 400 });
+      return new NextResponse(
+        JSON.stringify({
+          message:
+            "Group members should be at least 2, and a group name is required",
+        }),
+        {
+          status: 400,
+        }
+      );
     }
 
     if (isGroup) {

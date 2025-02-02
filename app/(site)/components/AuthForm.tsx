@@ -11,6 +11,7 @@ import { toast } from "react-hot-toast";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
+import { ClipLoader } from "react-spinners";
 
 const AuthForm = () => {
   type variants = "LOGIN" | "REGISTER";
@@ -91,7 +92,7 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div className="mt-8 sm:mx-auto px-4 sm:w-full sm:max-w-md">
       <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
         <form className="space-y-8" onSubmit={handleSubmit(onSubmit)}>
           {variant === "REGISTER" && (
@@ -128,10 +129,15 @@ const AuthForm = () => {
               {showPassword ? <IoIosEyeOff /> : <IoIosEye />}
             </span>
           </div>
-          <div>
+          <div className="relative flex items-center">
             <Button disabled={isLoading} fullwidth type="submit">
               {variant === "LOGIN" ? "Sign in" : "REGISTER"}
             </Button>
+            <ClipLoader
+              loading={isLoading}
+              color="#3d41b154"
+              className="absolute right-2"
+            />
           </div>
         </form>
         <div className="mt-6">

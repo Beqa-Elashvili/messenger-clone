@@ -109,21 +109,23 @@ const ConversationList: React.FC<ConversationListProps> = ({
             </div>
           </div>
           <hr />
-          {items.length === 0 && (
-            <div className="flex justify-center items-center gap-y-2 flex-col mt-6">
-              <p className="text-gray-600 font-semibold">No conversations</p>
-              <Button type="button" onClick={() => router.push("/users")}>
-                Choose a chat
-              </Button>
-            </div>
-          )}
-          {items.map((item) => (
-            <ConversationBox
-              key={item.id}
-              data={item}
-              selected={conversationId === item.id}
-            />
-          ))}
+          <div className="mt-4">
+            {items.length === 0 && (
+              <div className="flex justify-center items-center gap-y-2 flex-col">
+                <p className="text-gray-600 font-semibold">No conversations</p>
+                <Button type="button" onClick={() => router.push("/users")}>
+                  Choose a chat
+                </Button>
+              </div>
+            )}
+            {items.map((item) => (
+              <ConversationBox
+                key={item.id}
+                data={item}
+                selected={conversationId === item.id}
+              />
+            ))}
+          </div>
         </div>
       </aside>
     </>

@@ -10,6 +10,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Select from "@/app/components/inputs/Select";
 import Button from "@/app/components/Button";
+import { PulseLoader } from "react-spinners";
 
 interface GroupChatModalProps {
   users: User[];
@@ -28,6 +29,7 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
     register,
     handleSubmit,
     setValue,
+    reset,
     watch,
     formState: { errors },
   } = useForm<FieldValues>({
@@ -39,6 +41,9 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
   const members = watch("members");
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    if (data.members.length < 2) {
+      return toast.error("Group members should be at least 2");
+    }
     setIsLoading(true);
     axios
       .post("/api/conversations", {
@@ -48,6 +53,7 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
       .then(() => {
         router.refresh();
         onClose();
+        reset();
       })
       .catch(() => toast.error("Something went wrong"))
       .finally(() => setIsLoading(false));
@@ -90,18 +96,23 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
             </div>
           </div>
         </div>
-        <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Button
-            disabled={isLoading}
-            onClick={onClose}
-            type="button"
-            secondary
-          >
-            Cancel
-          </Button>
-          <Button disabled={isLoading} type="submit">
-            Create
-          </Button>
+        <div className="mt-6 flex items-center justify-between">
+          <div>
+            <PulseLoader loading={isLoading} color="#44bcbc" />
+          </div>
+          <div className="flex items-center gap-6">
+            <Button
+              disabled={isLoading}
+              onClick={onClose}
+              type="button"
+              secondary
+            >
+              Cancel
+            </Button>
+            <Button disabled={isLoading} type="submit">
+              Create
+            </Button>
+          </div>
         </div>
       </form>
     </Modal>

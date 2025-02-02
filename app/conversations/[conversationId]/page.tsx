@@ -5,9 +5,7 @@ import Header from "./components/Header";
 import Body from "./components/Body";
 import Form from "./components/Form";
 
-interface IParams {
-  conversationId: string;
-}
+
 
 const ConversationsId = async ({ params }: { params: any }) => {
   const conversation = await getConversationById(params.conversationId);
@@ -26,7 +24,7 @@ const ConversationsId = async ({ params }: { params: any }) => {
     <div className="lg:pl-80 h-full">
       <div className="h-full flex flex-col">
         <Header conversation={conversation} />
-        <Body initialMessages={messages} />
+        <Body conversation={conversation} initialMessages={messages} />
         <Form />
       </div>
     </div>
